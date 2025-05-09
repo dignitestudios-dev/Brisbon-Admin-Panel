@@ -13,7 +13,7 @@ import Reviews from "../pages/app/reviews/Reviews";
 import Bookings from "../pages/app/bookings/Bookings";
 import Users from "../pages/app/users/Users";
 import Services from "../pages/app/services/Services";
-import Reports from "../pages/app/reports/reports";
+import Reports from "../pages/app/reports/Reports";
 
 
 
