@@ -123,7 +123,7 @@ const UserProfile = () => {
 
                 {/* Service Record */}
                 <h3 className="font-semibold text-gray-800">
-                  {booking.serviceRecord?.title || "No title available"}
+                  {booking?.serviceRecord?.title || "No title available"}
                 </h3>
                 <p className="text-sm text-gray-500 line-clamp-2 mt-1">
                   {booking?.serviceRecord?.description || "No description available"}

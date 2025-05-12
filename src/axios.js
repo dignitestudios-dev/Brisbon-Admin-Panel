@@ -26,8 +26,8 @@ instance.interceptors.request.use(async (request) => {
   const result = await fp.get();
   const deviceId = result.visitorId;
  
-  config.headers['devicemodel'] = deviceId;
-  config.headers['deviceuniqueid'] = deviceId;
+  request.headers['devicemodel'] = deviceId;
+  request.headers['deviceuniqueid'] = deviceId;
  
   const token = Cookies.get("token");
     if (!navigator.onLine) {
