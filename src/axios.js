@@ -5,18 +5,18 @@ import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
 export const baseUrl = "http://3.144.235.185";
 
-// async function getDeviceFingerprint() {
-//   const fp = await FingerprintJS.load();
-//   const result = await fp.get();
-//   console.log(result.visitorId); 
-//   return result.visitorId;
-// }
+async function getDeviceFingerprint() {
+  const fp = await FingerprintJS.load();
+  const result = await fp.get();
+  console.log(result.visitorId); 
+  return result.visitorId;
+}
 
 const instance = axios.create({
   baseURL: baseUrl,
   headers: {
-    // devicemodel: await getDeviceFingerprint(),
-    // deviceuniqueid: await getDeviceFingerprint(),
+    devicemodel: await getDeviceFingerprint(),
+    deviceuniqueid: await getDeviceFingerprint(),
   },
   timeout: 10000, 
 });
