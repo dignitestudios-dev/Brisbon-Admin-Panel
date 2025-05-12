@@ -5,42 +5,71 @@ import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
 export const baseUrl = "http://3.144.235.185";
 
-async function getDeviceFingerprint() {
-  const fp = await FingerprintJS.load();
-  const result = await fp.get();
-  console.log(result.visitorId); 
-  return result.visitorId;
-}
+// async function getDeviceFingerprint() {
+//   const fp = await FingerprintJS.load();
+//   const result = await fp.get();
+//   console.log(result.visitorId); 
+//   return result.visitorId;
+// }
 
 const instance = axios.create({
   baseURL: baseUrl,
-  headers: {
-    devicemodel: await getDeviceFingerprint(),
-    deviceuniqueid: await getDeviceFingerprint(),
-  },
+  // headers: {
+  //   devicemodel: await getDeviceFingerprint(),
+  //   deviceuniqueid: await getDeviceFingerprint(),
+  // },
   timeout: 10000, 
 });
 
-instance.interceptors.request.use((request) => {
+instance.interceptors.request.use(async (request) => {
+  const fp = await FingerprintJS.load();
+  const result = await fp.get();
+  const deviceId = result.visitorId;
+ 
+  config.headers['devicemodel'] = deviceId;
+  config.headers['deviceuniqueid'] = deviceId;
+ 
   const token = Cookies.get("token");
-  if (!navigator.onLine) {
-    // No internet connection
-    ErrorToast(
-      "No internet connection. Please check your network and try again."
-    );
-    return;
-    // return Promise.reject(new Error("No internet connection"));
-  }
+    if (!navigator.onLine) {
+      // No internet connection
+      ErrorToast(
+        "No internet connection. Please check your network and try again."
+      );
+      return;
+      // return Promise.reject(new Error("No internet connection"));
+    }
+  
+    // Merge existing headers with token
+    request.headers = {
+      ...request.headers, // Keep existing headers like devicemodel and deviceuniqueid
+      Accept: "application/json, text/plain, */*",
+      ...(token && { Authorization: `Bearer ${token}` }), // Add Authorization only if token exists
+    };
+  
+    return request;
+
+});
+
+// instance.interceptors.request.use((request) => {
+//   const token = Cookies.get("token");
+//   if (!navigator.onLine) {
+//     // No internet connection
+//     ErrorToast(
+//       "No internet connection. Please check your network and try again."
+//     );
+//     return;
+//     // return Promise.reject(new Error("No internet connection"));
+//   }
 
   // Merge existing headers with token
-  request.headers = {
-    ...request.headers, // Keep existing headers like devicemodel and deviceuniqueid
-    Accept: "application/json, text/plain, */*",
-    ...(token && { Authorization: `Bearer ${token}` }), // Add Authorization only if token exists
-  };
+//   request.headers = {
+//     ...request.headers, // Keep existing headers like devicemodel and deviceuniqueid
+//     Accept: "application/json, text/plain, */*",
+//     ...(token && { Authorization: `Bearer ${token}` }), // Add Authorization only if token exists
+//   };
 
-  return request;
-});
+//   return request;
+// });
 
 instance.interceptors.response.use(
   (response) => response,
