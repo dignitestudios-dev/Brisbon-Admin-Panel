@@ -5,6 +5,7 @@ import { AiOutlineCheckCircle, AiOutlineCloseCircle, AiOutlineEye } from 'react-
 import { useBookingDetails } from '../../../hooks/api/Get';
 import { completeBookingStatus, updateBookingStatus } from '../../../hooks/api/Put';
 import SkeletonLoader from '../../../components/global/SkeletonLoader';
+import { ErrorToast } from '../../../components/global/Toaster';
 
 // Modal Component
 const Modal = ({ isOpen, onClose, onConfirm, message, loading }) => {
@@ -42,6 +43,8 @@ const BookingDetails = () => {
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
   const [isCompleteModalOpen, setCompleteModalOpen] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
+
 
   
 
@@ -70,31 +73,52 @@ const BookingDetails = () => {
   };
 
 
-  const handleStatusChange = async (newStatus, closeModal) => {
-    setActionLoading(true);
-    try {
-      await updateBookingStatus(id, newStatus);
-      closeModal(false);
-      window.location.reload(); // Optional: Replace with refetch logic for better UX
-    } catch (err) {
-      alert(`Failed to update booking status to ${newStatus}`);
-    } finally {
-      setActionLoading(false);
-    }
-  };
+const handleStatusChange = async (newStatus, closeModal) => {
+  setActionLoading(true);
+  try {
+    await updateBookingStatus(id, newStatus);
+    closeModal(false);
+    window.location.reload(); // Optional: Replace with refetch logic for better UX
+  } catch (err) {
+    // Check if the error has a specific message about status change
+    const errorMessage = err?.response?.data?.message || 'Failed to update booking status';
+    setApiError(errorMessage); // Store the error message in the state
+    ErrorToast( errorMessage);
+  } finally {
+    setActionLoading(false);
+  }
+};
 
-  const handleCompleteBooking = async ( closeModal) => {
-    setActionLoading(true);
-    try {
-      await completeBookingStatus(id);
-      closeModal(false);
-      window.location.reload(); // Optional: Replace with refetch logic for better UX
-    } catch (err) {
-      alert(`Failed to update booking status to completed`);
-    } finally {
-      setActionLoading(false);
-    }
-  };
+const handleCompleteBooking = async (closeModal) => {
+  setActionLoading(true);
+  try {
+    await completeBookingStatus(id);
+    closeModal(false);
+    window.location.reload();
+  } catch (err) {
+    const errorMessage = err?.response?.data?.message || 'Failed to update booking status to completed';
+    console.log('Error Message:', errorMessage); 
+    setApiError(errorMessage); 
+    ErrorToast( errorMessage); 
+  } finally {
+    setActionLoading(false);
+  }
+};
+
+
+
+// Render Payment Status
+  const paymentStatus = booking.isPaid ? (
+    <div className="flex items-center text-green-600">
+      <AiOutlineCheckCircle className="mr-2 text-xl" />
+      <span className="text-sm">Payment Completed</span>
+    </div>
+  ) : (
+    <div className="flex items-center text-red-600">
+      <AiOutlineCloseCircle className="mr-2 text-xl" />
+      <span className="text-sm">Payment Pending</span>
+    </div>
+  );
 
   return (
     <div className="mx-auto p-4">
@@ -135,6 +159,17 @@ const BookingDetails = () => {
           <span>{booking.spotSuggestion}</span>
         </div>
 
+        {/* Payment Status */}
+        <div className="mt-4">
+          <h4 className="font-semibold text-gray-800 text-sm mb-2">Payment Status</h4>
+          {paymentStatus}
+        </div>
+
+{apiError && (
+  <div className="bg-red-100 text-red-600 text-sm p-2 rounded-lg mb-4 mt-2">
+    <strong>Error: </strong>{apiError}
+  </div>
+)}
         {/* Action Buttons */}
         <div className="flex gap-4 mt-4 justify-end items-end">
           {booking.status === 'pending' && (
@@ -224,6 +259,8 @@ const BookingDetails = () => {
     </a>
   </div>
 </div>
+
+
 
 
       {/* Modals */}
