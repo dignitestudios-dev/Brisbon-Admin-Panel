@@ -121,7 +121,7 @@ const DummyLogin = () => {
 
         <div className="w-full -mt-1  flex items-center justify-end">
           <NavLink
-            to={"/forgot-password"}
+            to={"/auth/forgot-password"}
             className="text-[#46656E] hover:no-underline hover:text-[#2d4d56] text-[16px] font-normal leading-[20.4px]"
           >
             Forgot Password?

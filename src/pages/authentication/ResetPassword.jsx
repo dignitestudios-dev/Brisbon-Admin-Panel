@@ -4,9 +4,13 @@ import { brisbanelogo } from "../../assets/export";
 import { processResetPassword } from "../../lib/utils";
 import { useResetPassword } from "../../hooks/api/Post";
 import { initialResetPasswordValues } from "../../init/authentication/dummyLoginValues";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const ResetPassword = () => {
   const [formValues, setFormValues] = useState(initialResetPasswordValues);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+
   const { loading, resetPassword } = useResetPassword();
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,28 +48,49 @@ const ResetPassword = () => {
         onSubmit={handleSubmit}
         className="w-full md:w-[393px] mt-5 flex flex-col justify-start items-start gap-4"
       >
+        {/* New Password */}
         <div className="w-full flex flex-col gap-1">
-          <input
-            type="password"
-            name="password"
-            value={formValues.password}
-            onChange={handleChange}
-            className="w-full h-[49px] border-[0.8px] bg-[#F8F8F899] outline-none rounded-[8px] placeholder:text-[#959393] text-[#262626] px-3 text-[16px] font-normal border-[#D9D9D9]"
-            placeholder="New Password"
-          />
+          <div className="w-full flex items-center border-[0.8px] bg-[#F8F8F899] outline-none rounded-[8px] placeholder:text-[#959393] text-[#262626] px-3 text-[16px] font-normal border-[#D9D9D9]">
+            <input
+              type={isPasswordVisible ? "text" : "password"}
+              name="password"
+              value={formValues.password}
+              onChange={handleChange}
+              className="w-full h-[49px] bg-transparent outline-none text-[#262626] text-[16px] font-normal"
+              placeholder="New Password"
+            />
+            <button
+              type="button"
+              onClick={() => setIsPasswordVisible((prev) => !prev)}
+              className="p-2"
+            >
+              {isPasswordVisible ? <FaRegEye /> : <FaRegEyeSlash />  }
+            </button>
+          </div>
         </div>
 
+        {/* Confirm Password */}
         <div className="w-full flex flex-col gap-1">
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formValues.confirmPassword}
-            onChange={handleChange}
-            className="w-full h-[49px] border-[0.8px] bg-[#F8F8F899] outline-none rounded-[8px] placeholder:text-[#959393] text-[#262626] px-3 text-[16px] font-normal border-[#D9D9D9]"
-            placeholder="Confirm Password"
-          />
+          <div className="w-full flex items-center border-[0.8px] bg-[#F8F8F899] outline-none rounded-[8px] placeholder:text-[#959393] text-[#262626] px-3 text-[16px] font-normal border-[#D9D9D9]">
+            <input
+              type={isConfirmPasswordVisible ? "text" : "password"}
+              name="confirmPassword"
+              value={formValues.confirmPassword}
+              onChange={handleChange}
+              className="w-full h-[49px] bg-transparent outline-none text-[#262626] text-[16px] font-normal"
+              placeholder="Confirm Password"
+            />
+            <button
+              type="button"
+              onClick={() => setIsConfirmPasswordVisible((prev) => !prev)}
+              className="p-2"
+            >
+              {isConfirmPasswordVisible ? <FaRegEye /> : <FaRegEyeSlash />  }
+            </button>
+          </div>
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}
