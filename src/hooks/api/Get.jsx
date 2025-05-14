@@ -9,6 +9,7 @@ export const useDashboardStats = () => {
   const [stats, setStats] = useState({
     totalBookings: 0,
     totalServices: 0,
+    totalUsers: 0,  // Add totalUsers here
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,6 +25,7 @@ export const useDashboardStats = () => {
           setStats({
             totalBookings: response.data.data.totalbooking.value,
             totalServices: response.data.data.totalService.value,
+            totalUsers: response.data.data.totaUser.value, // Add totalUsers here
           });
         } else {
           setError('Failed to fetch dashboard stats');
@@ -40,6 +42,7 @@ export const useDashboardStats = () => {
 
   return { stats, loading, error };
 };
+
 
 
 const useUsers = (currentPage = 1) => {
@@ -428,4 +431,31 @@ const useChats = (currentPage = 1) => {
 export { useChats };
 
 
+const useNotifications = (page = 1) => {
+  const [loading, setLoading] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [pagination, setPagination] = useState({});
 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(`/notifications/admin?page=${page}`);
+        if (data?.success) {
+          setNotifications(data.data);
+          setPagination(data.pagination);
+        }
+      } catch (error) {
+        processError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, [page]);
+
+  return { loading, notifications, pagination };
+};
+
+export default useNotifications;

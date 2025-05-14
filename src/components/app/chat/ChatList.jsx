@@ -32,7 +32,7 @@ const ChatList = ({ chats, selectedChat, onSelectChat }) => {
 
             <div>
               <p className="font-medium">{chat?.user?.name}</p>
-              <p className="text-sm text-gray-500">{chat?.email}</p>
+              {/* <p className="text-sm text-gray-500">{chat?.email}</p> */}
             </div>
           </div>
         ))}

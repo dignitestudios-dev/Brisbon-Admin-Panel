@@ -8,6 +8,11 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 import { GoStar } from "react-icons/go";
 import { GoBriefcase } from "react-icons/go";
 import { GoCalendar } from "react-icons/go";
+import { HiOutlineCurrencyDollar } from "react-icons/hi2";
+import { PiCurrencyDollar } from "react-icons/pi";
+
+import { IoNotificationsOutline } from "react-icons/io5";
+
 
 
 
@@ -44,6 +49,17 @@ export const sidebarData = [
     title: "Reviews",
     icon: GoStar, // replace with the correct icon
     link: "/app/reviews",
+  },
+
+   {
+    title: "Transactions",
+    icon: PiCurrencyDollar, // replace with the correct icon
+    link: "/app/transactions",
+  },
+    {
+    title: "Notifications",
+    icon: IoNotificationsOutline, // replace with the correct icon
+    link: "/app/notifications",
   },
 
   {

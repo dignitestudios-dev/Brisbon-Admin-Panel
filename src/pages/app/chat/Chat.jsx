@@ -19,37 +19,56 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [messagesLoading, setMessagesLoading] = useState(false);  // State to track loading for messages
 
-  const handleSelectChat = (chat) => {
-    setSelectedChat(chat);
-    if (!chatMessages[chat.id]) {
-      fetchMessages(chat.id);
-    }
-  };
+const handleSelectChat = (chat) => {
+  setSelectedChat(chat);
+  if (!chatMessages[chat.id]) {
+    fetchMessages(chat.id);
+  }
+};
 
-  const fetchMessages = async (chatId) => {
-    setMessagesLoading(true);  // Set loading to true when fetching messages
-    try {
-      const chatData = chats.find((chat) => chat.id === chatId);
-      setSelectedChat(chatData);
+const fetchMessages = async (chatId) => {
+  setMessagesLoading(true);  // Set loading to true when fetching messages
+  try {
+    const chatData = chats.find((chat) => chat.id === chatId);
+    setSelectedChat(chatData);
 
-      const messagesRef = collection(db, "chats", chatId, "messages");
-      const q = query(messagesRef);
+    const messagesRef = collection(db, "chats", chatId, "messages");
+    const q = query(messagesRef);
 
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const chatMessage = [];
-        querySnapshot.forEach((doc) => {
-          chatMessage.push({ id: doc.id, ...doc.data() });
-        });
-        setMessages(chatMessage);
-        setMessagesLoading(false);  // Set loading to false after messages are fetched
+    // Start a listener for the messages
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const chatMessage = [];
+      querySnapshot.forEach((doc) => {
+        chatMessage.push({ id: doc.id, ...doc.data() });
       });
+      setMessages(chatMessage);
+      setMessagesLoading(false);  // Set loading to false after messages are fetched
+    });
 
-      return unsubscribe;
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-      setMessagesLoading(false);  // Set loading to false on error
+    // Cleanup the listener when the component unmounts or chat changes
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    setMessagesLoading(false);  // Set loading to false on error
+  }
+};
+
+// Cleanup Firestore listener when component unmounts or chat changes
+useEffect(() => {
+  // Fetch messages only when the chat changes
+  let unsubscribe;
+  if (selectedChat) {
+    unsubscribe = fetchMessages(selectedChat.id);
+  }
+
+  // Cleanup the listener on component unmount or when the chat is changed
+  return () => {
+    if (unsubscribe) {
+      unsubscribe();  // Unsubscribe to stop listening
     }
   };
+}, [selectedChat]); // Depend on selectedChat to trigger this effect when chat changes
+
 
   const handleSendMessage = async (message) => {
     const time = new Date().toLocaleTimeString([], {

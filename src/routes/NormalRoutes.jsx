@@ -14,6 +14,8 @@ import Bookings from "../pages/app/bookings/Bookings";
 import Users from "../pages/app/users/Users";
 import Services from "../pages/app/services/Services";
 import Reports from "../pages/app/reports/Reports";
+import Transactions from "../pages/app/transactions/Transactions";
+import Notifications from "../pages/app/notifications/Notifications";
 
 
 
@@ -69,6 +71,18 @@ export const normalRoutes = [
     title: "Location",
     url: "reviews",
     page: <Reviews />,
+  },
+
+  {
+    title: "Transactions",
+    url: "transactions",
+    page: <Transactions />,
+  },
+
+  {
+    title: "Notifications",
+    url: "notifications",
+    page: <Notifications />,
   },
 
   {
