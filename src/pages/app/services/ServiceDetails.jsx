@@ -7,6 +7,8 @@ import axios from '../../../axios';
 import { ErrorToast, SuccessToast } from '../../../components/global/Toaster';
 import { MdOutlineModeEdit } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { serviceSchema } from "../../../schema/authentication/dummyLoginSchema";
 
 
 
@@ -28,123 +30,126 @@ const DeleteModal = ({ isOpen, onClose, onConfirm }) => {
   );
 };
 
-// Modal for Editing Service
+
+
 const EditModal = ({ isOpen, onClose, onSubmit, service }) => {
-  const [formData, setFormData] = useState({
-    title: service.title,
-    description: service.description,
-    price: service.price,
-    duration: service.duration,
-    durationMetric: service.durationMetric,
-    startTime: service.startTime,
-    endTime: service.endTime
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
-
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-xl shadow-lg max-w-md w-full">
         <h3 className="text-xl font-bold mb-4">Edit Service</h3>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-2">
-            <label className="block text-sm font-medium text-gray-700">Title</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="mt-2 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-sm font-medium text-gray-700">Description</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="mt-2 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-sm font-medium text-gray-700">Price</label>
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              className="mt-2 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-sm font-medium text-gray-700">Duration</label>
-            <input
-              type="number"
-              name="duration"
-              value={formData.duration}
-              onChange={handleChange}
-              className="mt-2 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-sm font-medium text-gray-700">Duration Metric (hr, min, etc.)</label>
-            <input
-              type="text"
-              name="durationMetric"
-              value={formData.durationMetric}
-              onChange={handleChange}
-              className="mt-2 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-sm font-medium text-gray-700">Start Time</label>
-            <input
-              type="time"
-              name="startTime"
-              value={formData.startTime}
-              onChange={handleChange}
-              className="mt-2 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">End Time</label>
-            <input
-              type="time"
-              name="endTime"
-              value={formData.endTime}
-              onChange={handleChange}
-              className="mt-2 p-2 w-full border rounded-md"
-              required
-            />
-          </div>
-          <div className="flex justify-end gap-4">
-            <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Cancel</button>
-            <button type="submit" className="px-4 py-2 bg-gray-800 text-white hover:bg-gray-900 rounded-lg">Save Changes</button>
-          </div>
-        </form>
+
+        <Formik
+          initialValues={{
+            title: service.title || "",
+            description: service.description || "",
+            price: service.price || 1,
+            duration: service.duration || 1,
+            durationMetric: service.durationMetric || "hr",
+            startTime: service.startTime || "09:00",
+            endTime: service.endTime || "10:00",
+          }}
+          validationSchema={serviceSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            onSubmit(values);
+            setSubmitting(false);
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Title</label>
+                <Field
+                  type="text"
+                  name="title"
+                  className="mt-1 p-2 w-full border rounded-md"
+                />
+                <ErrorMessage name="title" component="div" className="text-red-500 text-sm" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Description</label>
+                <Field
+                  as="textarea"
+                  name="description"
+                  className="mt-1 p-2 w-full border rounded-md"
+                />
+                <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Price</label>
+                <Field
+                  type="number"
+                  name="price"
+                  className="mt-1 p-2 w-full border rounded-md"
+                />
+                <ErrorMessage name="price" component="div" className="text-red-500 text-sm" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Duration</label>
+                <Field
+                  type="number"
+                  name="duration"
+                  className="mt-1 p-2 w-full border rounded-md"
+                  disabled
+                />
+                <ErrorMessage name="duration" component="div" className="text-red-500 text-sm" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Duration Metric</label>
+                <Field
+                  type="text"
+                  name="durationMetric"
+                  className="mt-1 p-2 w-full border rounded-md"
+                  disabled
+                />
+                <ErrorMessage name="durationMetric" component="div" className="text-red-500 text-sm" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Start Time</label>
+                <Field
+                  type="time"
+                  name="startTime"
+                  className="mt-1 p-2 w-full border rounded-md"
+                />
+                <ErrorMessage name="startTime" component="div" className="text-red-500 text-sm" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">End Time</label>
+                <Field
+                  type="time"
+                  name="endTime"
+                  className="mt-1 p-2 w-full border rounded-md"
+                />
+                <ErrorMessage name="endTime" component="div" className="text-red-500 text-sm" />
+              </div>
+
+              <div className="flex justify-end gap-4 pt-4">
+                <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-4 py-2 bg-gray-800 text-white hover:bg-gray-900 rounded-lg"
+                >
+                  {isSubmitting ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );
 };
+
 
 const ServiceDetails = () => {
   const { id } = useParams();

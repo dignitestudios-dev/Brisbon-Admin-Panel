@@ -128,7 +128,7 @@ console.log("Pagination in Component:", pagination);
         </div>
       )}
 
-{pagination && pagination.totalPages && (
+{pagination && pagination.totalPages ? (
   <nav className="flex items-center justify-end space-x-2 mt-4" aria-label="Pagination">
     <button
       type="button"
@@ -175,7 +175,7 @@ console.log("Pagination in Component:", pagination);
       <FaChevronRight />
     </button>
   </nav>
-)}
+): null}
 
 
     </div>

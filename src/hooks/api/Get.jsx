@@ -23,9 +23,9 @@ export const useDashboardStats = () => {
         // Check if the response is successful
         if (response.data.success) {
           setStats({
-            totalBookings: response.data.data.totalbooking.value,
-            totalServices: response.data.data.totalService.value,
-            totalUsers: response.data.data.totaUser.value, // Add totalUsers here
+            totalBookings: response?.data?.data?.totalbooking?.value,
+            totalServices: response?.data?.data?.totalService?.value,
+            totalUsers: response?.data?.data?.totaUser?.value, // Add totalUsers here
           });
         } else {
           setError('Failed to fetch dashboard stats');
