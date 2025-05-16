@@ -165,53 +165,46 @@ const UserTable = () => {
       </div>
 
       {/* Pagination */}
-      {pagination && pagination.totalPages > 1 && (
-        <nav className="flex items-center justify-center space-x-2 mt-4" aria-label="Pagination">
-          {/* Previous Button */}
-          <button
-            type="button"
-            onClick={() =>
-              handlePagination(currentPage > 1 ? currentPage - 1 : currentPage)
-            }
-            disabled={!hasPreviousPage}
-            className="bg-[#EDEDED] rounded-full text-gray-800 px-4 py-2 flex items-center justify-center"
-          >
-            Previous
-          </button>
+      {pagination && pagination.totalPages > 1 && filteredUsers.length > 0 && (
+  <nav className="flex items-center justify-center space-x-2 mt-4" aria-label="Pagination">
+    <button
+      type="button"
+      onClick={() => handlePagination(currentPage > 1 ? currentPage - 1 : currentPage)}
+      disabled={!hasPreviousPage}
+      className="bg-[#EDEDED] rounded-full text-gray-800 px-4 py-2 flex items-center justify-center"
+    >
+      Previous
+    </button>
 
-          {/* Page Numbers */}
-          {generatePageNumbers().map((page) => (
-            <button
-              key={page}
-              onClick={() => handlePagination(page)}
-              className={`px-4 py-2 rounded-full ${
-                currentPage === page
-                  ? "bg-gradient-to-r from-[#46656E] to-[#313D41] text-white"
-                  : "text-gray-800 hover:bg-[#EDEDED]"
-              }`}
-            >
-              {page}
-            </button>
-          ))}
+    {generatePageNumbers().map((page) => (
+      <button
+        key={page}
+        onClick={() => handlePagination(page)}
+        className={`px-4 py-2 rounded-full ${
+          currentPage === page
+            ? "bg-gradient-to-r from-[#46656E] to-[#313D41] text-white"
+            : "text-gray-800 hover:bg-[#EDEDED]"
+        }`}
+      >
+        {page}
+      </button>
+    ))}
 
-          {/* Ellipsis */}
-          {pagination.totalPages > 5 && currentPage < pagination.totalPages - 2 && (
-            <span className="text-gray-800">...</span>
-          )}
+    {pagination.totalPages > 5 && currentPage < pagination.totalPages - 2 && (
+      <span className="text-gray-800">...</span>
+    )}
 
-          {/* Next Button */}
-          <button
-            type="button"
-            onClick={() =>
-              handlePagination(currentPage < pagination.totalPages ? currentPage + 1 : currentPage)
-            }
-            disabled={!hasNextPage}
-            className="bg-[#EDEDED] rounded-full text-gray-800 px-4 py-2 flex items-center justify-center"
-          >
-            Next
-          </button>
-        </nav>
-      )}
+    <button
+      type="button"
+      onClick={() => handlePagination(currentPage < pagination.totalPages ? currentPage + 1 : currentPage)}
+      disabled={!hasNextPage}
+      className="bg-[#EDEDED] rounded-full text-gray-800 px-4 py-2 flex items-center justify-center"
+    >
+      Next
+    </button>
+  </nav>
+)}
+
     </div>
   );
 };

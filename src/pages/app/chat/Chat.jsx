@@ -55,19 +55,32 @@ const fetchMessages = async (chatId) => {
 
 // Cleanup Firestore listener when component unmounts or chat changes
 useEffect(() => {
-  // Fetch messages only when the chat changes
-  let unsubscribe;
-  if (selectedChat) {
-    unsubscribe = fetchMessages(selectedChat.id);
-  }
+  if (!selectedChat) return;
 
-  // Cleanup the listener on component unmount or when the chat is changed
-  return () => {
-    if (unsubscribe) {
-      unsubscribe();  // Unsubscribe to stop listening
+  setMessagesLoading(true);
+
+  const messagesRef = collection(db, "chats", selectedChat.id, "messages");
+  const q = query(messagesRef);
+
+  const unsubscribe = onSnapshot(
+    q,
+    (querySnapshot) => {
+      const chatMessages = [];
+      querySnapshot.forEach((doc) => {
+        chatMessages.push({ id: doc.id, ...doc.data() });
+      });
+      setMessages(chatMessages);
+      setMessagesLoading(false);
+    },
+    (error) => {
+      console.error("Error fetching messages:", error);
+      setMessagesLoading(false);
     }
-  };
-}, [selectedChat]); // Depend on selectedChat to trigger this effect when chat changes
+  );
+
+  return () => unsubscribe(); // Proper cleanup
+}, [selectedChat]);
+// Depend on selectedChat to trigger this effect when chat changes
 
 
   const handleSendMessage = async (message) => {
