@@ -43,6 +43,13 @@ const ChatScreen = ({ selectedChat, onSendMessage, userChat }) => {
       return getDate(a) - getDate(b);
     });
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent the default behavior (e.g., form submission)
+      handleSendMessage(); // Send message on Enter key press
+    }
+  };
+
   return (
     <main className="w-full flex flex-col bg-white overflow-y-auto">
       {selectedChat ? (
@@ -97,6 +104,7 @@ const ChatScreen = ({ selectedChat, onSendMessage, userChat }) => {
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type a message..."
               className="flex-1 px-5 py-2 rounded-md border border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#46656E]"
+              onKeyDown={handleKeyPress} // Add keyDown event handler
             />
             <button
               onClick={handleSendMessage}
