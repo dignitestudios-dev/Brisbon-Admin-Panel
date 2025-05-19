@@ -12,7 +12,6 @@ export const signInSchema = Yup.object({
 
 
 
-
 const allowedTextRegex = /^[a-zA-Z0-9.,'’"!?()&\- ]+$/;
 
 export const serviceSchema = Yup.object({
@@ -21,14 +20,26 @@ export const serviceSchema = Yup.object({
     .min(3, "Title must be at least 3 characters long.")
     .max(50, "Title must not exceed 50 characters.")
     .matches(allowedTextRegex, "Title contains invalid characters.")
-    .test("not-blank", "Title cannot be only whitespace.", value => value && value.trim().length > 0),
+    .test("not-blank", "Title cannot be only whitespace or special characters.", value => {
+      // Check if value contains at least one alphanumeric character or a valid symbol
+      return value && /[a-zA-Z0-9]/.test(value);
+    })
+    .test("no-special-only", "Title cannot consist solely of special characters.", value => {
+      // Check that there are at least some alphanumeric characters
+      return value && /[a-zA-Z0-9]/.test(value);
+    }),
 
   description: Yup.string()
     .required("Service description is required.")
     .min(10, "Description must be at least 10 characters long.")
     .max(200, "Description must not exceed 200 characters.")
     .matches(allowedTextRegex, "Description contains invalid characters.")
-    .test("not-blank", "Description cannot be only whitespace.", value => value && value.trim().length > 0),
+    .test("not-blank", "Description cannot be only whitespace or special characters.", value => {
+      return value && /[a-zA-Z0-9]/.test(value);  // Ensure there's at least one alphanumeric character
+    })
+    .test("no-special-only", "Description cannot consist solely of special characters.", value => {
+      return value && /[a-zA-Z0-9]/.test(value);  // Ensure there's at least one alphanumeric character
+    }),
 
   duration: Yup.number()
     .min(1, "Duration must be at least 1 hour.")
@@ -45,10 +56,18 @@ export const serviceSchema = Yup.object({
     .required("Price is required."),
 
   startTime: Yup.string()
-    .required("Start time is required."),
+    .required("Start time is required.")
+    .matches(
+      /^[0-2][0-9]:[0-5][0-9]$/,
+      "Start time must be in HH:MM format (24-hour)"
+    ),  // Validates time in HH:MM (24-hour) format
 
   endTime: Yup.string()
     .required("End time is required.")
+    .matches(
+      /^[0-2][0-9]:[0-5][0-9]$/,
+      "End time must be in HH:MM format (24-hour)"
+    )  // Validates time in HH:MM (24-hour) format
     .test(
       "end-after-start",
       "End time must be at least 1 hour after start time.",
@@ -66,4 +85,6 @@ export const serviceSchema = Yup.object({
       }
     ),
 });
+
+
 

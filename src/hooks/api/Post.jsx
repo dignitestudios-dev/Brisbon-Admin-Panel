@@ -2,13 +2,13 @@ import { useContext, useState } from "react";
 import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
 import { processError } from "../../lib/utils";
 import { useNavigate } from "react-router";
-import axios from "../../axios"; 
+import axios from "../../axios";
 import { AppContext } from "../../context/AppContext";
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const {loginAuth} = useContext(AppContext)
+  const { loginAuth } = useContext(AppContext)
 
   const postData = async (
     url,
@@ -18,15 +18,15 @@ const useLogin = () => {
     callback
   ) => {
     try {
-      console.log(data,"Submitting data to URL:"); // Debugging lineq
+      console.log(data, "Submitting data to URL:"); // Debugging lineq
       setLoading(true);
       const response = await axios.post(url, isFormData ? formdata : data);
       if (typeof callback === "function") {
-        callback(response?.data, navigate,loginAuth);
+        callback(response?.data, navigate, loginAuth);
       }
       return response?.data;
     } catch (error) {
-      console.log(error,"errro")
+      console.log(error, "errro")
       const msg = error?.response?.data?.message || "Something went wrong";
       ErrorToast(msg);
       processError(error);
@@ -46,17 +46,17 @@ const useCreateService = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const createService = async (data, callback) => {
+  const createService = async (data, callback, isModal = false,setUpdate) => {
     try {
       setLoading(true);
       const response = await axios.post('/service', data); // Your API endpoint for creating services
-      if (response?.data?.success) {
+      if (typeof callback === 'function') {
         // Call callback to handle the response, maybe navigate or show success toast
-        callback(response?.data);
+        callback(response?.data, isModal,setUpdate);
       }
     } catch (error) {
-      console.error(error);
-      alert('Error creating service');
+      console.log(error, 'Error')
+
     } finally {
       setLoading(false);
     }
@@ -65,7 +65,7 @@ const useCreateService = () => {
   return { createService, loading };
 };
 
-export {useCreateService};
+export { useCreateService };
 
 const useForgotPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -97,7 +97,7 @@ const useForgotPassword = () => {
 
 
 
-export {useForgotPassword};
+export { useForgotPassword };
 
 
 

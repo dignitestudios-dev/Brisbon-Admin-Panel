@@ -16,6 +16,15 @@ export const processLogin = (data, navigate, loginAuth) => {
   }
 };
 
+export const processAddService = (data, setShowModal,setUpdate) => {
+  if (data?.success) {
+    SuccessToast(data?.message);
+    setShowModal(false)
+    setUpdate((prev) => !prev);
+    return;
+  }
+};
+
 export const processError = (error) => {
   if (error?.response?.data?.message) {
     ErrorToast(error?.response?.data?.message);
@@ -30,7 +39,7 @@ export const processError = (error) => {
 export const processForgotPassword = (data, navigate, email) => {
   if (data?.success) {
     navigate("/auth/verify-otp", {
-      state: { email }, 
+      state: { email },
     });
   }
 };

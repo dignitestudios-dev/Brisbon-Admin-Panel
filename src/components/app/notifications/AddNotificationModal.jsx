@@ -33,7 +33,8 @@ const AddNotificationModal = ({ showModal, setShowModal }) => {
     }
   } catch (error) {
     console.error(error);
-    ErrorToast("Something went wrong. Please try again.");
+
+    ErrorToast(error?.response?.data?.message || "Something went wrong. Please try again.");
   } finally {
     setIsLoading(false);
   }

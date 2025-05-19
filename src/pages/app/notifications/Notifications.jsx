@@ -63,7 +63,7 @@ const Notifications = () => {
           <button
             type="button"
             onClick={() => goToPage(currentPage > 1 ? currentPage - 1 : currentPage)}
-            className="bg-[#EDEDED] rounded-full text-gray-800 px-4 py-2"
+            className="rounded-full px-4 py-2 bg-[#EDEDED] text-[#46656E] hover:bg-[#46656E] hover:text-white"
           >
             Previous
           </button>
@@ -72,7 +72,7 @@ const Notifications = () => {
             <button
               key={i}
               onClick={() => goToPage(i + 1)}
-              className={`px-4 py-2 rounded-full ${currentPage === i + 1 ? "bg-blue-500 text-white" : "text-gray-800"}`}
+              className={`px-4 py-2 rounded-full ${currentPage === i + 1 ? "bg-gradient-to-r from-[#46656E] to-[#313D41] text-white" : "text-gray-800"}`}
             >
               {i + 1}
             </button>
@@ -81,7 +81,7 @@ const Notifications = () => {
           <button
             type="button"
             onClick={() => goToPage(currentPage < pagination.totalPages ? currentPage + 1 : currentPage)}
-            className="bg-[#EDEDED] rounded-full text-gray-800 px-4 py-2"
+            className="rounded-full px-4 py-2 bg-[#EDEDED] text-[#46656E] hover:bg-[#46656E] hover:text-white"       
           >
             Next
           </button>

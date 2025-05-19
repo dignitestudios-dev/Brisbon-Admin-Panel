@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { brisbanelogo } from "../../assets/export";
 import { processResetPassword } from "../../lib/utils";
@@ -15,7 +15,20 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const email = location?.state?.email;
+  // Get email and token from location state
+  const { email, token } = location?.state || {};
+  console.log("token 00 ---",token)
+
+  // Use useEffect to handle navigation after component mount
+ useEffect(() => {
+  console.log('Email:', email);
+  console.log('Token:', token);
+  if (!email || !token) {
+    // Navigate to login if no email or token is found
+    // navigate("/auth/login");
+  }
+}, [email, token, navigate]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +44,8 @@ const ResetPassword = () => {
       return;
     }
 
-    resetPassword(formValues, processResetPassword);
+    // You can send the token along with the new password when resetting
+    resetPassword({ ...formValues }, processResetPassword);
   };
 
   return (
@@ -64,7 +78,7 @@ const ResetPassword = () => {
               onClick={() => setIsPasswordVisible((prev) => !prev)}
               className="p-2"
             >
-              {isPasswordVisible ? <FaRegEye /> : <FaRegEyeSlash />  }
+              {isPasswordVisible ? <FaRegEye /> : <FaRegEyeSlash />}
             </button>
           </div>
         </div>
@@ -85,7 +99,7 @@ const ResetPassword = () => {
               onClick={() => setIsConfirmPasswordVisible((prev) => !prev)}
               className="p-2"
             >
-              {isConfirmPasswordVisible ? <FaRegEye /> : <FaRegEyeSlash />  }
+              {isConfirmPasswordVisible ? <FaRegEye /> : <FaRegEyeSlash />}
             </button>
           </div>
         </div>

@@ -231,34 +231,42 @@ const handleCompleteBooking = async (closeModal) => {
       </div>
 
       {/* Service Details */}
-      <div className="bg-white rounded-xl p-4 shadow-sm border">
-  <h3 className="text-base font-semibold text-gray-800 mb-2">Service Details</h3>
-  <div className="flex justify-between items-center">
-    <h4 className="font-semibold text-gray-800 text-sm">{service?.title}</h4>
-    <div className="flex items-center text-sm text-gray-700 gap-1">
-  <FaStar className="text-yellow-500" />
-  <span className="text-xs font-semibold">
-    {service?.rating?.toFixed(1)}
-  </span>
-</div>
+     {/* Service Details */}
+{service?.price === '$0' ? (
+  // If price is 0, show the "Free Consultation" message
+  <div className="bg-white rounded-xl p-4 shadow-sm border">
+    <h3 className="text-base font-semibold text-gray-800 mb-2">Service Details</h3>
+    <p className="text-sm text-gray-500 mt-1">This service is a free consultation.</p>
+    <p className="text-sm font-semibold text-gray-900">Free</p>
+  </div>
+) : (
+  // Otherwise, show the normal service details
+  <div className="bg-white rounded-xl p-4 shadow-sm border">
+    <h3 className="text-base font-semibold text-gray-800 mb-2">Service Details</h3>
+    <div className="flex justify-between items-center">
+      <h4 className="font-semibold text-gray-800 text-sm">{service?.title}</h4>
+      <div className="flex items-center text-sm text-gray-700 gap-1">
+        <FaStar className="text-yellow-500" />
+        <span className="text-xs font-semibold">{service?.rating?.toFixed(1)}</span>
+      </div>
+    </div>
+    <p className="text-sm text-gray-500 mt-1 line-clamp-2">{service?.description}</p>
+    <div className="flex items-center justify-between mt-4">
+      <p className="text-sm font-semibold text-gray-900">
+        {service?.price}{' '}
+        <span className="text-xs font-normal text-gray-500 ml-1">{service?.duration}</span>
+      </p>
+      <a
+        href={`/app/service-details/${service.id}`}
+        className="flex bg-gray-700 items-center border p-2 rounded-lg text-white text-sm cursor-pointer"
+      >
+        <AiOutlineEye className="mr-1 text-xl" />
+        View Service
+      </a>
+    </div>
+  </div>
+)}
 
-  </div>
-  <p className="text-sm text-gray-500 mt-1 line-clamp-2">{service?.description}</p>
-  <div className="flex items-center justify-between mt-4">
-    <p className="text-sm font-semibold text-gray-900">
-      {service?.price}{' '}
-      <span className="text-xs font-normal text-gray-500 ml-1">{service?.duration}</span>
-    </p>
-    <a
-      href={`/app/service-details/${booking.serviceRecord?._id}`}  
-      className="flex bg-gray-700 items-center border p-2 rounded-lg text-white text-sm cursor-pointer"
-    >
-      <AiOutlineEye className="mr-1 text-xl" />
-      {/* <FaChevronRight size={14} /> */}
-      View Service
-    </a>
-  </div>
-</div>
 
 
 

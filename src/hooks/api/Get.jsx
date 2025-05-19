@@ -113,7 +113,7 @@ export const useUserProfileDetails = (id) => {
 
 
 
-const useServices = (url, currentPage = 1) => {
+const useServices = (url, currentPage = 1,update) => {
   const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -125,7 +125,7 @@ const useServices = (url, currentPage = 1) => {
       
       if (data?.success) {
         setServices(data?.data); 
-        setPagination(data?.pagination); 
+        setPagination(data?.pagination);  
       }
     } catch (error) {
       processError(error);
@@ -136,7 +136,7 @@ const useServices = (url, currentPage = 1) => {
 
   useEffect(() => {
     getServices();
-  }, [currentPage]);
+  }, [currentPage,update]);
 
   return { loading, services, pagination };
 };

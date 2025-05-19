@@ -3,15 +3,16 @@ import { FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { useServices } from "../../../hooks/api/Get"; 
 import AddServiceModal from "./AddServiceModal"; 
-import SkeletonLoader from "../../global/SkeletonLoader"; // Import the SkeletonLoader component
+import SkeletonLoader from "../../global/SkeletonLoader";
 
 const ServiceTable = () => {
   const [showModal, setShowModal] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);  // Pagination state
+  const [update, setUpdate] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);  
   const navigate = useNavigate();
 
-  // Fetch services with pagination
-  const { loading, services, pagination } = useServices("/service", currentPage); 
+  
+  const { loading, services, pagination } = useServices("/service", currentPage,update); 
 
   // Handle navigation to service details page
   const handleNavigate = (serviceId) => {
@@ -111,6 +112,7 @@ const ServiceTable = () => {
       <AddServiceModal
         showModal={showModal}
         setShowModal={setShowModal}
+        setUpdate={setUpdate}
       />
     </div>
   );

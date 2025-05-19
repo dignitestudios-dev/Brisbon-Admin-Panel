@@ -3,9 +3,10 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import { serviceSchema } from "../../../schema/authentication/dummyLoginSchema"; // Yup validation schema
 import { useCreateService } from "./../../../hooks/api/Post"; // Custom hook to post data
 import { initialServiceValues } from "./../../../init/authentication/dummyLoginValues";
-import { SuccessToast } from "../../global/Toaster";
+import { SuccessToast, ErrorToast } from "../../global/Toaster"; // Assuming you have an ErrorToast function
+import { processAddService } from "../../../lib/utils";
 
-const AddServiceModal = ({ showModal, setShowModal }) => {
+const AddServiceModal = ({ showModal, setShowModal,setUpdate }) => {
   const { createService, loading } = useCreateService();
 
   // Helper to convert "14:00" to "2:00 PM"
@@ -20,23 +21,25 @@ const AddServiceModal = ({ showModal, setShowModal }) => {
     });
   };
 
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+  const handleSubmit = async (values) => {
     const formattedValues = {
       ...values,
-      startTime: formatTimeTo12Hour(values.startTime),
-      endTime: formatTimeTo12Hour(values.endTime),
+      startTime: values.startTime, // Don't convert to 12-hour format
+      endTime: values.endTime,     // Don't convert to 12-hour format
     };
 
-    await createService(formattedValues, () => {
-      resetForm();
-      setShowModal(false);
-      SuccessToast("Service created successfully!");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500); // reload after 1.5 seconds
-    });
 
-    setSubmitting(false);
+    createService(formattedValues, processAddService,setShowModal,setUpdate);
+
+    // if (response.success == 200) {
+    //   resetForm();
+    //   setShowModal(false);
+    //   SuccessToast("Service created successfully!");
+    //   // setTimeout(() => {
+    //   //   window.location.reload();
+    //   // }, 1500); // reload after 1.5 seconds
+    // } 
+
   };
 
   return (
@@ -95,7 +98,7 @@ const AddServiceModal = ({ showModal, setShowModal }) => {
                     type="number"
                     name="duration"
                     className="w-full border border-gray-300 px-3 py-2 rounded-md"
-                    disabled 
+                    disabled
                   />
                   <ErrorMessage
                     name="duration"
@@ -113,7 +116,7 @@ const AddServiceModal = ({ showModal, setShowModal }) => {
                     as="select"
                     name="durationMetric"
                     className="w-full border border-gray-300 px-3 py-2 rounded-md"
-                    disabled 
+                    disabled
                   >
                     <option value="hr">Hour</option>
                     <option value="min">Minute</option>
@@ -188,9 +191,8 @@ const AddServiceModal = ({ showModal, setShowModal }) => {
                   <button
                     type="submit"
                     disabled={isSubmitting || loading}
-                    className={`px-4 py-2 bg-[#074F57] text-white rounded-md ${
-                      isSubmitting || loading ? "opacity-50" : ""
-                    }`}
+                    className={`px-4 py-2 bg-[#074F57] text-white rounded-md ${isSubmitting || loading ? "opacity-50" : ""
+                      }`}
                   >
                     {isSubmitting || loading ? "Creating..." : "Add Service"}
                   </button>

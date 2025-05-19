@@ -56,7 +56,7 @@ export const sidebarData = [
     icon: PiCurrencyDollar, // replace with the correct icon
     link: "/app/transactions",
   },
-    {
+  {
     title: "Notifications",
     icon: IoNotificationsOutline, // replace with the correct icon
     link: "/app/notifications",

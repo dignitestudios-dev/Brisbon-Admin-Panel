@@ -1,4 +1,3 @@
-import ReportsTable from "../../../components/app/reports/ReportsTable";
 import ServiceTable from "../../../components/app/services/ServiceTable";
 
 const Services = () => {
