@@ -53,7 +53,7 @@ const AddNotificationModal = ({ showModal, setShowModal }) => {
           </button> */}
 
           <h3 className="text-lg font-semibold mb-4 text-left">
-            Add New Notification
+            Create New Notification
           </h3>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -98,7 +98,7 @@ const AddNotificationModal = ({ showModal, setShowModal }) => {
                   isLoading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
-                {isLoading ? "Adding..." : "Add Notification"}
+                {isLoading ? "Creating..." : "Create Notification"}
               </button>
             </div>
           </form>

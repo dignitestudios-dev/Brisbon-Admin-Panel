@@ -27,7 +27,7 @@ const Notifications = () => {
           onClick={() => setShowModal(true)}
           className="bg-[#074F57] text-white px-4 py-2 rounded-md shadow hover:bg-[#066058] transition"
         >
-          + Add New Notification
+          + Create Notification
         </button>
       </div>
 
