@@ -66,7 +66,7 @@ const UserTable = () => {
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Users Management</h1>
 
       {/* Filter Tabs */}
-      <div className="flex space-x-4 mb-6">
+      {/* <div className="flex space-x-4 mb-6">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -83,7 +83,7 @@ const UserTable = () => {
             {tab.label}
           </button>
         ))}
-      </div>
+      </div> */}
 
       <div className="bg-white rounded-md border border-gray-200 overflow-hidden">
         <table className="min-w-full text-sm">
