@@ -222,12 +222,12 @@ const ServiceDetails = () => {
 
       {/* Service Details */}
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-left">Service Details</h1>
-      <h2 className="text-xl font-semibold text-gray-900 mb-3">{service.title}</h2>
-      <p className="text-sm text-gray-600 leading-relaxed mb-4">{service.description}</p>
+      <h2 className="text-xl font-semibold text-gray-900 mb-3">{service?.title}</h2>
+      <p className="text-sm text-gray-600 leading-relaxed break-words mb-4">{service?.description}</p>
       <div className="mt-4 mb-6">
-        <p className="text-lg font-bold text-gray-900">${service.price}</p>
+        <p className="text-lg font-bold text-gray-900">${service?.price}</p>
         <p className="text-xs text-gray-500">
-          For {service.duration} {service.durationMetric} session
+          For {service?.duration} {service?.durationMetric} session
         </p>
       </div>
 
@@ -235,7 +235,7 @@ const ServiceDetails = () => {
       <div className="mb-6">
         <h3 className="text-2xl font-semibold text-gray-800 mb-4">Available Slots</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {service.slots.map((slot, index) => (
+          {service?.slots.map((slot, index) => (
             <div
               key={index}
               className="relative p-4 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 transition-all duration-300 cursor-pointer group"
@@ -254,7 +254,7 @@ const ServiceDetails = () => {
 
         {reviews?.length > 0 ? (
           reviews.map((review) => (
-            <div key={review._id} className="mb-6 border-b pb-6">
+            <div key={review?._id} className="mb-6 border-b pb-6">
               <div className="flex items-center gap-3">
                 <img
                   src={review?.userRecord?.profilePicture}
@@ -266,7 +266,7 @@ const ServiceDetails = () => {
                   <p className="text-xs text-gray-500">{new Date(review?.createdAt).toLocaleDateString()}</p>
                   <p className="text-sm text-gray-600 mb-3">{review?.comments}</p>
                   <div className="flex items-center text-yellow-500 mb-1">
-                    {[...Array(Math.floor(review?.rating))]?.map((_, i) => (
+                    {[...Array(Math?.floor(review?.rating))]?.map((_, i) => (
                       <FaStar key={i} size={14} />
                     ))}
                   </div>

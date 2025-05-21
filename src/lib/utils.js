@@ -61,7 +61,7 @@ export const processVerifyOtp = (data, navigate, email) => {
 
 export const processResetPassword = (data, navigate) => {
   if (data?.success) {
-    // navigate("/auth/login");
+    navigate("/auth/login");
     SuccessToast("password reset successfully");
 
   } else {
