@@ -49,7 +49,7 @@ const ChatScreen = ({ selectedChat, onSendMessage, userChat }) => {
       handleSendMessage(); // Send message on Enter key press
     }
   };
-
+  console.log(sortedChats, "abc")
   return (
     <main className="w-full flex flex-col bg-white overflow-y-auto">
       {selectedChat ? (
@@ -73,20 +73,24 @@ const ChatScreen = ({ selectedChat, onSendMessage, userChat }) => {
               sortedChats.map((chat, index) => (
                 <div
                   key={index}
-                  className={`flex ${
-                    chat?.sender_id === "0pou1K5DCgZGcE3GOUinUgoxp0V2"
+                  className={`flex ${chat?.sender_id === "0pou1K5DCgZGcE3GOUinUgoxp0V2"
                       ? "justify-end"
                       : "justify-start"
-                  }`}
+                    }`}
                 >
                   <div
-                    className={`max-w-[75%] px-4 py-2 text-sm rounded-2xl shadow ${
-                      chat?.sender_id === "0pou1K5DCgZGcE3GOUinUgoxp0V2"
+                    className={`max-w-[75%] px-4 py-2 text-sm rounded-2xl shadow ${chat?.sender_id === "0pou1K5DCgZGcE3GOUinUgoxp0V2"
                         ? "bg-[#46656E] text-white"
                         : "bg-white border border-gray-200 text-gray-800"
-                    }`}
+                      }`}
                   >
-                    <p>{chat?.text}</p>
+                    {
+                      chat?.type == "media" ? (
+                        <img src={chat.text} className="w-40 h-40" alt="" srcset="" />
+                      ) : (
+                        <p>{chat?.text}</p>
+                      )
+                    }
                     <span className="text-[10px] mt-1 block text-right text-gray-400">
                       {chat?.time}
                     </span>
