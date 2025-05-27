@@ -43,13 +43,26 @@ const ChatScreen = ({ selectedChat, onSendMessage, userChat }) => {
       return getDate(a) - getDate(b);
     });
 
+  // Function to format the timestamp into a human-readable format
+ const formatTimestamp = (timestamp) => {
+  const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
+  return date.toLocaleString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  }); // e.g., "27 May 2025, 10:30 AM"
+};
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       e.preventDefault(); // Prevent the default behavior (e.g., form submission)
       handleSendMessage(); // Send message on Enter key press
     }
   };
-  console.log(sortedChats, "abc")
+
   return (
     <main className="w-full flex flex-col bg-white overflow-y-auto">
       {selectedChat ? (
@@ -91,9 +104,10 @@ const ChatScreen = ({ selectedChat, onSendMessage, userChat }) => {
                         <p>{chat?.text}</p>
                       )
                     }
-                    <span className="text-[10px] mt-1 block text-right text-gray-400">
-                      {chat?.time}
-                    </span>
+                   <span className="text-[10px] mt-1 block text-right text-gray-400">
+  {chat?.created_at ? formatTimestamp(chat.created_at) : ""}
+</span>
+
                   </div>
                 </div>
               ))
