@@ -30,7 +30,7 @@ const ChatList = ({ chats, selectedChat, onSelectChat }) => {
     />
     {/* <span
       className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${
-        chat.is_deactivate ? "bg-gray-400" : "bg-green-500"
+        chat.is_deactivate ? "bg-gray-400" : "bg-green-500" 
       }`}
     /> */}
   </div>

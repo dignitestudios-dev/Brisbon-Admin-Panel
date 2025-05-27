@@ -74,20 +74,20 @@ const ReportsTable = () => {
             const title =
               service?.title ||
               (review?.comments ? `Review: ${review.comments.slice(0, 50)}...` : null) ||
-              "Untitled Report";
+              "Free Service Report";
 
             return (
               <div
                 key={report._id}
                 className="bg-gray-50 p-4 rounded-xl shadow border border-gray-100"
               >
-                <p className="text-xs text-gray-500 mb-1">
+                {/* <p className="text-xs text-gray-500 mb-1">
                   Report ID: <span className="font-semibold">{report._id}</span>
-                </p>
+                </p> */}
                 <h3 className="font-semibold text-gray-800">{title}</h3>
 
                 <p className="text-sm text-gray-500 line-clamp-2 mt-1">
-                  {service?.description || review?.comments || "No description available."}
+                  {service?.description || review?.comments || "This is a free service report."}
                 </p>
 
                 <p className="text-sm text-gray-500 mt-2">
